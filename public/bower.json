@@ -1,0 +1,22 @@
+{
+  "name": "charts-js",
+  "description": "A simple example of web application developed with angularjs and highcharts",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mmontes11/charts-js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+	"angular": "1.2.x",
+	"angular-route": "1.2.x",
+  "angular-loader": "1.2.x",
+  "angular-mocks": "~1.2.x",
+	"angular-resource": "latest",
+  "angular-bootstrap": "latest",
+	"angular-bootstrap-colorpicker": "latest",   
+  "highcharts-release": "latest",
+  "highcharts-ng": "latest",    
+  "jquery": "latest",
+  "bootstrap" : "latest"
+  }
+}
+

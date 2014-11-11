@@ -1,0 +1,62 @@
+<div id="container">
+	<div class="left well">
+		<div class="form-group formData">
+			<ng-form name="form" class="css-form" novalidate>
+				<p class="bg-danger center" ng-show="(form.numX.$dirty && form.numX.$error.required) ||
+												 (form.numY.$dirty && form.numY.$error.required) ||
+												 (form.min.$dirty && form.min.$error.required) ||
+												 (form.max.$dirty && form.max.$error.required)">
+					All fields are required
+				</p>
+				<p class="bg-danger center" ng-show="form.numX.$error.number ||
+												 form.numY.$error.number ||
+												 form.min.$error.number ||
+												 form.max.$error.number">
+					Some of the fields is not a number
+				</p>
+				<p class="bg-danger center" ng-show="(form.numX.$error.min || form.numX.$error.max) ||
+												 (form.numY.$error.min || form.numY.$error.max)">
+					The AXIS must be between 0 and 10
+				</p>
+				<p class="bg-danger center" ng-show="(form.min.$error.min || form.min.$error.max) ||
+												 (form.max.$error.min || form.max.$error.max)">
+					The VALUES must be between 0 and 100
+				</p>
+				<label for="numX">Num X Axis:</label>
+				<br/><br/>
+				<input id='numX' name='numX' type="number" class="form-control"
+					   ng-model="numX" min="0" max="10" integer required/>
+				<br/><br/>
+				<label for="numY">Num Y Axis:</label>
+				<br/><br/>
+				<input id='numY' name='numY' type="number" class="form-control"
+					   ng-model="numY" min="0" max="10" integer required/>
+				<br/><br/>
+				<label for="min">Minimal Value:</label>
+				<br/><br/>
+				<input id='min' name='min' type="number"class="form-control"
+					   ng-model="min" min="0" max="100" integer required/>
+				<br/><br/>
+				<label for="max">Maximum Value:</label>
+				<br/><br/>
+				<input id='max' name='max' type="number" class="form-control"
+					   ng-model="max" min="0" max="100" integer required/>
+				<br/><br/>
+				<button class="btn btn-primary" ng-click="randomChart(0)" ng-disabled="!wsEnabled || form.$invalid || innerform.$invalid">
+					Generate Chart <span class="glyphicon glyphicon-stats"></span>
+				</button>
+				<br/><br/>
+				<button class="btn btn-success" ng-click="randomChart(1)">
+					Small Chart <span class="glyphicon glyphicon-stats"></span>
+				</button>
+				<br/><br/>
+				<button class="btn btn-danger" ng-click="randomChart(2)">
+					Large Chart <span class="glyphicon glyphicon-stats"></span>
+				</button>
+			</ng-form>
+		</div>
+	</div>	
+	<div class="right well">
+		<chart chart-type="ws"></chart>
+	</div>
+</div>
