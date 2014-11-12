@@ -1,9 +1,10 @@
 {
-  "name"         : "node-todo",
-  "version"      : "0.0.0",
-  "description"  : "Simple todo application.",
+  "name"         : "charts-js-MEAN",
+  "version"      : "0.0.1",
+  "description"  : "A sample MEAN (MongoDB + Express + AngularJS + NodeJS) app that uses HighchartsJS",
+  "homepage"     : "https://github.com/mmontes11/charts-js-MEAN.git",
   "main"         : "server.js",
-  "author"       : "Scotch",
+  "author"       : "Martin Montes",
   "dependencies" : {
     "express"         : "~4.6.1",
     "mongoose"        : "~3.8.13",
