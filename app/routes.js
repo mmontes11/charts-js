@@ -1,4 +1,5 @@
 var Todo = require('../db/models/todo');
+var Chart = require('../db/models/chart');
 
 module.exports = function(app) {
 
@@ -53,6 +54,24 @@ module.exports = function(app) {
 				res.json(todos);
 			});
 		});
+	});
+
+	// add a chart
+	app.post('/api/chart', function(req, res) {
+		Chart.create(req.body, function(err, chartss){
+				if (err)
+					res.send(err);
+				res.json(charts);
+		});
+	});
+
+	//get all charts
+	app.get('/api/charts', function(req,res) {
+		Chart.find(function (err,charts) {
+			if (err)
+				res.send(err);
+			res.json(charts);
+		})
 	});
 
 	// application -------------------------------------------------------------
