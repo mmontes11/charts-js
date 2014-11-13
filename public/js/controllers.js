@@ -22,8 +22,8 @@ controllers.controller('AccordionInfoCtrl', ['$scope', function($scope) {
   ];
 }]);
 
-controllers.controller('ChartCtrl', ['$scope', function($scope) {
-    $scope.chartFormConfig = {
+controllers.controller('ChartCtrl', ['$scope', 'Chart', function($scope, Chart) {
+    $scope.chartFormConfig = {          
           chart: {
               type: 'line'
           },
@@ -40,7 +40,7 @@ controllers.controller('ChartCtrl', ['$scope', function($scope) {
           },
           series: [{
               name: 'Martin',
-              data: [3, 4, 3],
+              data: [3, 4, 3]
           },
           {
               name: 'John',
@@ -50,9 +50,9 @@ controllers.controller('ChartCtrl', ['$scope', function($scope) {
               name: 'Stacy',
               data: [8, 2, 7]
           }]
-     };
+    };
 
-    $scope.chartWebServiceConfig= {
+    $scope.chartWebServiceConfig = {
         chart: {
               type: 'line'
         },
@@ -93,6 +93,10 @@ controllers.controller('ChartCtrl', ['$scope', function($scope) {
     $scope.updateChartWS(data);
   });
 
+  $scope.saveChart = function(){
+    Chart.save({},$scope.chartFormConfig);
+  }
+
 }]);
 
 
@@ -113,7 +117,7 @@ controllers.controller('ChartFormCtrl', ['$scope', function($scope) {
               {"id": "LongDashDot", "title": "LongDashDot"},
               {"id": "LongDashDotDot", "title": "LongDashDotDot"} ];
 
-  $scope.addconsumer = function (){
+  $scope.addConsumerForm = function (){
     var series = [];
     $.each($scope.candies, function(key, element){
       series.push({
@@ -123,6 +127,7 @@ controllers.controller('ChartFormCtrl', ['$scope', function($scope) {
     }); 
     $scope.$broadcast("UPDATE_CHART_FORM",{name: $scope.name, dashstyle: $scope.dashstyle, linecolor: $scope.linecolor, series: series});
   }
+
 }]);
 
 controllers.controller('ChartWebServiceCtrl', 

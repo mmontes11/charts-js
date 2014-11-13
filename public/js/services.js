@@ -4,11 +4,13 @@
 
 var services = angular.module('services', ['ngResource']);
 
-var rootUrl = 'http://ec2-54-165-61-101.compute-1.amazonaws.com:8080/';
+var amazonUrl = 'http://ec2-54-165-61-101.compute-1.amazonaws.com:8080/';
+var apiUrl = 'http://localhost:8080/api/';
 var serviceConfig = {
-						pingUrl: rootUrl + 'ping',
-						randomChartUrl: rootUrl + 'chart/random'
-					 };
+	pingUrl: amazonUrl + 'ping',
+	randomChartUrl: amazonUrl + 'chart/random',
+	chartsUrl: apiUrl + 'charts'
+};
 
 
 services.factory('Ping',  function(){
@@ -27,6 +29,19 @@ services.factory('RandomChart', ['$resource', function($resource){
 		{numXaxis: 3, numYaxis: 3, min: 0, max: 10},
 		//Resource method
 		{max: {method: 'GET', params:{numXaxis: 10, numYaxis: 10, min: 0, max: 100}}}
+	);	
+}]);
+
+services.factory('Chart', ['$resource', function($resource){
+	return $resource( 
+		//Resource URL
+		serviceConfig.chartsUrl ,
+		//Default Parameters
+		{},
+		//CustomActions
+		{},
+		//Options
+		{}
 	);	
 }]);
 

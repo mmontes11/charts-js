@@ -6,15 +6,18 @@ var ChartSchema = new Schema({
 				          type: {type : String, default: ''}
 				      },
 				      title: {
-				          text: {type : String, default: ''}
+				    	text: {type : String, default: ''}
 				      },
 				      xAxis: {
-				          categories: []
+				      	title: {
+				    		text: {type : String, default: ''}
+				    	},
+				   		categories: []
 				      },
 				      yAxis: {
-				          title: {
-				              text: {type : String, default: ''}
-				          }
+				    	title: {
+				        	text: {type : String, default: ''}
+				    	}
 				      },
 				      series: []
 				});

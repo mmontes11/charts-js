@@ -57,11 +57,11 @@ module.exports = function(app) {
 	});
 
 	// add a chart
-	app.post('/api/chart', function(req, res) {
-		Chart.create(req.body, function(err, chartss){
-				if (err)
-					res.send(err);
-				res.json(charts);
+	app.post('/api/charts', function(req, res) {
+		Chart.create(req.body, function(err, chart){
+			if (err)
+				res.send(err);
+			res.json(chart);
 		});
 	});
 
