@@ -11,7 +11,7 @@ var methodOverride = require('method-override');
 // configuration ===============================================================
 mongoose.connect(database.url); 	// connect to mongoDB database on modulus.io
 
-app.use(express.static(__dirname + '/public')); 		// set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/client')); 		// set the static files location /public/img will be /img for users
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.urlencoded({'extended':'true'})); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
@@ -20,7 +20,7 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 
 
 // routes ======================================================================
-require('./app/routes.js')(app);
+require('./server/routes.js')(app);
 
 // listen (start app with node server.js) ======================================
 app.listen(port);
