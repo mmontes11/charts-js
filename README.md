@@ -1,6 +1,6 @@
-# charts-js MEAN 
+# charts-js 
 
-A sample MEAN (NodeJS + ExrpessJS + AngularJS + MongoDB) application thats uses HighchartsJS
+A sample  MEAN (MongoDB + ExrpessJS + AngularJS + NodeJS) application thats uses HighchartsJS
 
 We use NodeJS + ExpressJS + MongoDB for the back-end.
 
