@@ -4,7 +4,7 @@ A sample  MEAN (MongoDB + ExrpessJS + AngularJS + NodeJS) application thats uses
 
 We use NodeJS + ExpressJS + MongoDB for the back-end.
 
-The front-end  was built with AngularJS. We use [charts-js](https://github.com/mmontes11/charts-js) as a base.
+The front-end  was built with AngularJS.
 
 It also consumes a webservice that provides random data of charts to be displayed. That webservice is 
 [charts-js-rest](https://github.com/mmontes11/charts-js-rest).
