@@ -17,4 +17,4 @@ Install nodeJS and npm and execute:
 2. npm start
 
 ## Demo
-[Online Demo charts-js]
+[Online Demo charts-js](https://charts-js.firebaseapp.com)
