@@ -15,3 +15,6 @@ Install nodeJS and npm and execute:
 
 1. npm install
 2. npm start
+
+## Demo
+[Online Demo charts-js]
