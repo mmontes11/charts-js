@@ -1,0 +1,79 @@
+<div id="container">
+    <div class="left well">
+        <div class="form-group formData">
+            <ng-form name="form" class="css-form" novalidate>
+                <p class="bg-danger center" ng-show="form.name.$dirty && form.name.$error.required">
+                    Name is mandatory
+                </p>
+                <p class="bg-danger center" ng-show="innerform.quantity.$dirty && innerform.quantity.$error.required">
+                    Candies are mandatory
+                </p>
+                <p class="bg-danger center" ng-show="innerform.quantity.$error.number">
+                    This is not a valid integer
+                </p>
+                <p class="bg-dangr center" ng-show="innerform.quantity.$error.min || innerform.quantity.$error.max">
+                    The number of candies must be between 0 and 100
+                </p>
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        <h4 class="panel-title">Name</h4>
+                    </span>
+                    <input type='text' class="form-control" ng-model="name"/>
+                </div>
+                </input>
+                <accordion>
+                    <accordion-group is-open="status.open">
+                        <accordion-heading>
+                            Candies
+                            <i class="pull-right glyphicon"
+                               ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                        </accordion-heading>
+                        <ng-form name="innerform">
+                            <div class="controls controls-row" ng-repeat="candy in candies">
+                                    <div class='input-group'>
+                                        <span class="input-group-addon">
+                                            <h4 class="panel-title">{{candy.name}}</h4>
+                                        </span>
+                                        <input name="quantity" class="form-control" type="number"
+                                               ng-model="candies[$index].quantity"
+                                               min="0" max="100" integer required>
+                                    </div>
+                            </div>
+                        </ng-form>
+                    </accordion-group>
+                </accordion>
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        <h4 class="panel-title">Dashstyle</h4>
+                    </span>
+                    <select name="dashstyle" class="form-control" ng-model="dashstyle"
+                            ng-options="ds.id as ds.title for ds in dashstyles">
+                    </select>
+                </div>
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        <h4 class="panel-title">Line Color</h4>
+                    </span>
+                    <input colorpicker id='linecolor' type="text" class="form-control" ng-model="linecolor"/>
+                </div>
+                <div class='input-group'>
+                    <span class="input-group-addon">
+                        <h4 class="panel-title">Point Color</h4>
+                    </span>
+                    <input colorpicker id='pointcolor' type="text" class="form-control" ng-model="pointcolor"/>
+                </div>
+                <button class="btn btn-primary" ng-click="addConsumerForm()"
+                        ng-disabled="form.$invalid || innerform.$invalid">
+                    Add consumer <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </ng-form>
+        </div>
+    </div>
+    <div class="right well">
+        <chart chart-type="form"></chart>
+        <button ng-click="saveChart()">
+            Save Chart
+        </button>
+    </div>
+</div>
+

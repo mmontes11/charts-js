@@ -1,15 +1,17 @@
 <div id="container">
-	<div class="well center">
-		<h1>Welcome to ChartsJS!</h1>
-		<p>A sample AngularJS + Highcharts web application</p>
-	</div>
-	<accordion>
-		<accordion-group is-open="status.open" ng-repeat="group in groups">
-		    <accordion-heading>
-		        {{group.title}} 
-		        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-		    </accordion-heading>
-		    {{group.content}} 
-		</accordion-group>
-	</accordion>
+    <div class="well center">
+        <h1>Welcome to ChartsJS!</h1>
+
+        <p>A sample AngularJS + Highcharts web application</p>
+    </div>
+    <accordion>
+        <accordion-group is-open="status.open" ng-repeat="group in groups">
+            <accordion-heading>
+                {{group.title}}
+                <i class="pull-right glyphicon"
+                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            </accordion-heading>
+            {{group.content}}
+        </accordion-group>
+    </accordion>
 </div>

@@ -1,5 +1,5 @@
 module.exports = {
 
-	// the database url to connect
-	url : 'mongodb://User:Password@proximus.modulusmongo.net:27017/nU5dasyx'
+    // the database url to connect
+    url: 'mongodb://localhost:27017/chartsjs'
 }
