@@ -18,13 +18,16 @@ controllers.controller('AccordionInfoCtrl', ['$scope', function ($scope) {
     ];
 }]);
 
-controllers.controller('ChartCtrl', ['$scope', 'Chart', function ($scope, Chart) {
+controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($scope, Chart, Random) {
     $scope.chartFormConfig = {
         chart: {
             type: 'line'
         },
         title: {
             text: 'Candy Consumption'
+        },
+        credits: {
+            enabled: false
         },
         xAxis: {
             categories: ['Lollipops', 'Jelly Beans', 'Bubble Gum']
@@ -36,24 +39,27 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', function ($scope, Chart)
         },
         series: [{
             name: 'Martin',
-            data: [3, 4, 3]
+            data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
         },
             {
                 name: 'John',
-                data: [5, 1, 8]
+                data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
             },
             {
                 name: 'Stacy',
-                data: [8, 2, 7]
+                data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
             }]
     };
 
-    $scope.chartWebServiceConfig = {
+    $scope.chartRandomConfig = {
         chart: {
             type: 'line'
         },
+        credits: {
+            enabled: false
+        },
         title: {
-            text: 'This chart will be filled by the WebService'
+            text: 'Random Chart'
         },
         xAxis: {
             categories: ['Category1', 'Category2', 'Category3', 'Category4', 'Category5']
@@ -65,32 +71,27 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', function ($scope, Chart)
         },
         series: [{
             name: 'Serie',
-            data: [1, 2, 3, 4, 5],
+            data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
         }]
     };
 
     //Form Chart Operations
     $scope.addConsumer = function (name, dashStyle, color, data) {
         $scope.chartFormConfig.series.push({name: name, dashStyle: dashStyle, color: color, data: data});
-        $('#chart').highcharts($scope.chartFormConfig);
-    }
+        $('#chart').highcharts(angular.copy($scope.chartFormConfig));
+    };
 
     $scope.$on("UPDATE_CHART_FORM", function (event, data) {
         $scope.addConsumer(data.name, data.dashstyle, data.linecolor, data.series);
     });
 
     $scope.$on("UPDATE_CHART_WS", function (event, jsonChart) {
-        $('#chart').highcharts(jsonChart);
+        $('#chart').highcharts(angular.copy(jsonChart));
     });
-
-    $scope.saveChart = function () {
-        Chart.save({}, $scope.chartFormConfig);
-    }
-
 }]);
 
 
-controllers.controller('FormCtrl', ['$scope', function ($scope) {
+controllers.controller('ManualCtrl', ['$scope', function ($scope) {
     $scope.candies = [{"name": "Lollipops", "quantity": ""},
         {"name": "Jelly Beans", "quantity": ""},
         {"name": "Bubble Gum", "quantity": ""}];
@@ -126,32 +127,37 @@ controllers.controller('FormCtrl', ['$scope', function ($scope) {
 }]);
 
 controllers.controller('RandomCtrl', ['$scope', '$location', 'Chart', function ($scope, $location, Chart) {
-        $scope.jsonData = "";
+    $scope.jsonData = "";
 
-        $scope.randomChart = function (chartType) {
-            var params = {numXaxis: $scope.numX, numYaxis: $scope.numY, min: $scope.min, max: $scope.max};
+    $scope.randomChart = function (chartType) {
+        var params = {numXaxis: $scope.numX, numYaxis: $scope.numY, min: $scope.min, max: $scope.max};
 
-            var updateChart = function (data) {
-                $scope.jsonData = data;
-                $scope.$broadcast("UPDATE_CHART_WS", data);
-            };
+        var updateChart = function (data) {
+            $scope.jsonData = data;
+            $scope.$broadcast("UPDATE_CHART_WS", data);
+        };
 
-            switch (chartType) {
-                case 0:
-                    var data = Chart.get(params, function () {
-                        updateChart(data);
-                    });
-                    break;
-                case 1:
-                    var data = Chart.get({}, function () {
-                        updateChart(data);
-                    });
-                    break;
-                default:
-                    var data = Chart.max({}, function () {
-                        updateChart(data);
-                    });
-                    break;
-            }
+        switch (chartType) {
+            case 0:
+                var data = Chart.get(params, function () {
+                    updateChart(data);
+                });
+                break;
+            case 1:
+                var data = Chart.minRandom({}, function () {
+                    updateChart(data);
+                });
+                break;
+            case 2:
+                var data = Chart.maxRandom({}, function () {
+                    updateChart(data);
+                });
+                break;
         }
-    }]);
+    }
+}]);
+
+controllers.controller('ListChartsCtrl', ['$scope', '$location', 'Chart', function ($scope, $location, Chart) {
+
+    Chart.all();
+}]);

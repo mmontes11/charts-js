@@ -2,24 +2,12 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 var ChartSchema = new Schema({
-    chart: {
-        type: {type: String, default: ''}
-    },
-    title: {
-        text: {type: String, default: ''}
-    },
-    xAxis: {
-        title: {
-            text: {type: String, default: ''}
-        },
-        categories: []
-    },
-    yAxis: {
-        title: {
-            text: {type: String, default: ''}
-        }
-    },
-    series: []
+    type: {type: String, default: ''},
+    description: {type: String, default: ''},
+    data: {type: Object},
+    cretionDate: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model('Chart', ChartSchema);
+var chartModel = mongoose.model('Chart', ChartSchema);
+
+exports.chartModel = chartModel;

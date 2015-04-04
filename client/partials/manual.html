@@ -2,25 +2,13 @@
     <div class="left well">
         <div class="form-group formData">
             <ng-form name="form" class="css-form" novalidate>
-                <p class="bg-danger center" ng-show="form.name.$dirty && form.name.$error.required">
-                    Name is mandatory
-                </p>
-                <p class="bg-danger center" ng-show="innerform.quantity.$dirty && innerform.quantity.$error.required">
-                    Candies are mandatory
-                </p>
-                <p class="bg-danger center" ng-show="innerform.quantity.$error.number">
-                    This is not a valid integer
-                </p>
-                <p class="bg-dangr center" ng-show="innerform.quantity.$error.min || innerform.quantity.$error.max">
-                    The number of candies must be between 0 and 100
-                </p>
                 <div class='input-group'>
                     <span class="input-group-addon">
                         <h4 class="panel-title">Name</h4>
                     </span>
                     <input type='text' class="form-control" ng-model="name"/>
+                    </input>
                 </div>
-                </input>
                 <accordion>
                     <accordion-group is-open="status.open">
                         <accordion-heading>
@@ -36,7 +24,7 @@
                                         </span>
                                         <input name="quantity" class="form-control" type="number"
                                                ng-model="candies[$index].quantity"
-                                               min="0" max="100" integer required>
+                                               integer required>
                                     </div>
                             </div>
                         </ng-form>
@@ -70,10 +58,7 @@
         </div>
     </div>
     <div class="right well">
-        <chart chart-type="form"></chart>
-        <button ng-click="saveChart()">
-            Save Chart
-        </button>
+        <chart chart-type="manual"></chart>
     </div>
 </div>
 

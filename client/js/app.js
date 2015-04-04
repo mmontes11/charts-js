@@ -15,14 +15,18 @@ var app = angular.module('chartsJS', [
 
 app.constant("Config", {
     "ChartUrl": "http://localhost:8080/chart"
-})
+});
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/info', {templateUrl: 'partials/info.html', controller: 'AccordionInfoCtrl'});
-    $routeProvider.when('/form', {templateUrl: 'partials/form.html', controller: 'FormCtrl'});
+    $routeProvider.when('/manual', {templateUrl: 'partials/manual.html', controller: 'ManualCtrl'});
     $routeProvider.when('/random', {
         templateUrl: 'partials/random.html',
         controller: 'RandomCtrl'
+    });
+    $routeProvider.when('/listCharts', {
+        templateUrl: 'partials/listCharts.html',
+        controller: 'ListChartsCtrl'
     });
     $routeProvider.otherwise({redirectTo: '/info'});
 }]);

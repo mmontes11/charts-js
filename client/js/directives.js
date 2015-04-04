@@ -17,18 +17,33 @@ directives.directive('navbar', ['$location', function ($location) {
     };
 }]);
 
-directives.directive('chart', function () {
+directives.directive('chart', ['Chart', function (Chart) {
     return {
         restrict: "E",
         controller: "ChartCtrl",
         templateUrl: "partials/chart.html",
         link: function (scope, element, attributes) {
-            if (attributes.chartType === "form") {
-                $('#chart').highcharts(scope.chartFormConfig);
+            if (attributes.chartType === "manual") {
+                $('#chart').highcharts(angular.copy(scope.chartFormConfig));
             }
-            if (attributes.chartType === "ws") {
-                $('#chart').highcharts(scope.chartWebServiceConfig);
+            if (attributes.chartType === "random") {
+                $('#chart').highcharts(angular.copy(scope.chartRandomConfig));
+            }
+
+            scope.saveChart = function () {
+                var data;
+                if (attributes.chartType === "manual") {
+                    data = scope.chartFormConfig;
+                } else if (attributes.chartType === "random") {
+                    data = scope.chartRandomConfig;
+                }
+                var new_chart = {
+                    type: attributes.chartType,
+                    description: "colourful chart",
+                    data: data
+                };
+                Chart.save({}, new_chart);
             }
         }
-    };
-})
+    }
+}]);
