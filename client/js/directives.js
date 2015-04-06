@@ -8,7 +8,7 @@ var directives = angular.module('directives', []);
 directives.directive('navbar', ['$location', function ($location) {
     return {
         restrict: "E",
-        templateUrl: "partials/navbar.html",
+        templateUrl: "partials/directives/navbar.html",
         link: function (scope) {
             scope.isActive = function (path) {
                 return path === $location.path();
@@ -21,15 +21,26 @@ directives.directive('chart', ['Chart', function (Chart) {
     return {
         restrict: "E",
         controller: "ChartCtrl",
-        templateUrl: "partials/chart.html",
+        templateUrl: "partials/directives/chart.html",
         link: function (scope, element, attributes) {
-            if (attributes.chartType === "manual") {
-                $('#chart').highcharts(angular.copy(scope.chartFormConfig));
-            }
-            if (attributes.chartType === "random") {
-                $('#chart').highcharts(angular.copy(scope.chartRandomConfig));
+            scope.updateChart = function(jsonChart){
+                jsonChart["chart"] = {
+                    "renderTo": "chart",
+                    "type": "line" 
+                };
+                jsonChart["credits"] = {
+                    "enabled": false
+                };
+                scope.chart = new Highcharts.Chart(angular.copy(jsonChart));
             }
 
+            if (attributes.chartType === "manual") {
+                scope.updateChart(scope.chartFormConfig);
+            }
+            if (attributes.chartType === "random") {
+                scope.updateChart(scope.chartRandomConfig);
+            }
+         
             scope.saveChart = function () {
                 var data;
                 if (attributes.chartType === "manual") {
@@ -42,8 +53,37 @@ directives.directive('chart', ['Chart', function (Chart) {
                     description: "colourful chart",
                     data: data
                 };
-                Chart.save({}, new_chart);
+                Chart.save(null, new_chart)
+                    .$promise.then(
+                        function(success){
+                            scope.showDialog("Info","Chart saved correctly");
+                        },
+                        function(error){
+                            scope.showDialog("Error","Chart couldn't be saved");
+                        }
+                    );
+            }
+
+            scope.exportChart = function() {
+                scope.chart.exportChart({
+                    type: 'image/png',
+                    filename: 'chart'
+                });
             }
         }
     }
 }]);
+
+directives.directive('customdialog',function(){
+    return {
+        restrict: "E",
+        templateUrl: "partials/dialog/customdialog.html",
+        link: function(scope, element, attributes){ 
+            scope.showDialog = function(title,body){
+                scope.titleDialog = title;
+                scope.bodyDialog = body;
+                $('#customdialog').modal({ keyboard: false }); 
+            }
+        }   
+    };
+});

@@ -1,3 +1,5 @@
+
+var mongoose = require('mongoose');
 var db_chart = require('../../db/models/chart');
 var random = require('../utils/random');
 
@@ -98,3 +100,27 @@ exports.getAllCHarts = function (req, res) {
     })
 };
 
+exports.getChartByID = function(req,res){
+    var chartID = req.param("chartID");
+    var ObjectId = mongoose.Types.ObjectId;
+
+    if (chartID == ''){
+        return res.send(404);
+    }
+    if (!ObjectId.isValid(chartID)){
+        return res.status(400).json({
+            error: 'Bad ID'
+        });
+    }
+
+    db_chart.chartModel
+        .findOne()
+        .where('_id').equals(ObjectId(chartID))
+        .exec(function (err,chart){
+            if (err || chart == undefined){
+                console.log(err);
+                return res.send(404);
+            }
+            return res.json(chart);
+        });
+}

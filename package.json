@@ -2,7 +2,7 @@
   "name": "charts-js",
   "version": "0.0.1",
   "description": "A sample MEAN (MongoDB + Express + AngularJS + NodeJS) app that uses HighchartsJS",
-  "homepage": "https://github.com/mmontes11/charts-js-MEAN.git",
+  "respository": "https://github.com/mmontes11/charts-js",
   "main": "server.js",
   "author": "Martin Montes",
   "dependencies": {

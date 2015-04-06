@@ -1,0 +1,39 @@
+.head-table {
+	width: auto;
+}
+
+.dataHeadTitle {
+	width: auto;
+	display: inline;
+	vertical-align : middle;
+}
+
+.iconHeadTitle {
+	width:auto;
+	display: inline;
+	vertical-align : middle;
+	padding-left: 1px;
+}
+
+.input-group-btn.input-group-btn-generic-table {
+	width: auto;
+	font-size: small;
+	display: inline-flex;
+	vertical-align : middle;
+}
+
+.input-group-generic-table {
+	width: auto;
+	display: inline-flex;
+	vertical-align : middle;
+}
+
+.form-horizontal .form-group {
+	width: auto;
+	margin: 0 0 0 0;
+}
+
+.backgroundWhite {
+	background: none;
+	background-color: white;
+}

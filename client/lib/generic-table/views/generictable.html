@@ -1,0 +1,366 @@
+<div id="{{tabledata.tableId}}">
+	<div ng-scrolling scroll="tabledata.pagination.scrolling" height="tabledata.pagination.maxHeight" 
+			 width="tabledata.pagination.maxWidth" tg-pagination>
+		<table class="table" ng-if="!tableDestroy" ng-class="{ 'table-striped': !tabledata.rowClickable,
+																												 'table-hover': tabledata.rowClickable}">
+			<thead id="headTable">
+				<tr>
+					<th ng-if="tabledata.checkboxColumn && (!tabledata.checkboxColumn.position || 
+										 tabledata.checkboxColumn.position !== 'last')" class="text-center"> 
+						<span ng-show="!tabledata.checkboxColumn.sortable" style="width:70%">
+							{{tabledata.checkboxColumn.title }}</span>
+						<span class="clickable" ng-show="tabledata.checkboxColumn.sortable" ng-click="changeSort(-1)">
+							<span style="width:70%">{{tabledata.checkboxColumn.title }}</span>
+							<span ng-show="!reverseSort && order==='-1'" class="glyphicon glyphicon-chevron-down"
+										popover="{{'ORDER_DOWN_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left"/>
+							<span ng-show="reverseSort && order==='-1'" class="glyphicon glyphicon-chevron-up"
+										popover="{{'ORDER_UP_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left"/>
+						</span>
+					</th>
+					<th ng-if="!tabledata.headerColumns.empty" ng-repeat="data in tabledata.headerColumns | objectToArray 
+																																track by $index"
+							ng-scrolling scroll="data.scrolling" height="data.maxHeight" width="data.maxWidth" class="head-table">
+						<form class="form-horizontal">
+							<div class="form-group" ng-if="!data.sortable && !data.searchable">
+								<span class="dataHeadTitle">{{data.title }}</span>
+							</div>
+
+							<div class="form-group" ng-if="searchActive[data._$key] && data.type === 'date'">
+								<div class='input-group input-group-generic-table date' >
+									<input type="text" ng-model="tabledata.searchText[data._$key].startDate"  
+												 ng-change="!tabledata.searchableOutside? 
+																		searchChange(data._$key): ''" readonly />
+									<div class="input-group-btn">
+										<button class="btn btn-default" type="submit">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-if="data.sortable || data.searchable">
+								<div class="clickable dataHeadTitle" ng-show="!searchActive[data._$key]" ng-click="changeSort(data._$key)">
+									<span class="control-label">{{data.title }}</span>
+								</div>
+								<div ng-show="searchActive[data._$key]" class="dataHeadTitle">
+									<div class='input-group input-group-generic-table'>
+										<form ng-submit="searchChange(data._$key)">
+											<input ng-if="data.type !== 'date'" type="search"
+														 ng-model="tabledata.searchText[data._$key]"
+														 focus-on="searchActive[data._$key]" ng-change="!tabledata.searchableOutside? 
+																																						searchChange(data._$key): ''"/>
+											<div ng-if="data.type === 'date'" class='date input-group input-group-generic-table' >
+												<input type="text" ng-model="tabledata.searchText[data._$key].endDate"
+															 ng-change="!tabledata.searchableOutside? 
+																					searchChange(data._$key): ''" readonly/>
+												<div class="input-group-btn">
+													<button class="btn btn-default" type="submit">
+														<span class="glyphicon glyphicon-calendar"></span>
+													</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="input-group-btn input-group-btn-generic-table clickable">
+									<span ng-show="data.sortable && !reverseSort && order==data._$key" 
+												class="iconHeadTitle glyphicon glyphicon-chevron-down"
+												popover="{{'ORDER_DOWN_TOOLTIP' }}" popover-trigger="mouseenter" 
+												popover-placement="left"
+												ng-click="changeSort(data._$key)"/>
+									<span ng-show="data.sortable && reverseSort && order==data._$key" 
+												class="iconHeadTitle glyphicon glyphicon-chevron-up"
+												popover="{{'ORDER_UP_TOOLTIP' }}" popover-trigger="mouseenter" 
+												popover-placement="left"
+												ng-click="changeSort(data._$key)"/>
+									<span popover="{{'SEARCH_TOOLTIP' }}" popover-trigger="mouseenter" 
+												popover-placement="left" ng-show="data.searchable && !searchActive[data._$key]" 
+												ng-click="searchActive[data._$key]=true" 
+												class="iconHeadTitle glyphicon glyphicon-search"/>
+									<span ng-show="data.searchable && searchActive[data._$key]" 
+												ng-click="searchActive[data._$key]=false; tabledata.searchText[data._$key]=''; searchChange(data._$key)" 
+												class="iconHeadTitle glyphicon glyphicon-remove"
+												popover="{{'CANCEL_TOOLTIP' }}" popover-trigger="mouseenter" 
+												popover-placement="left"/>
+								</div>
+							</div>
+						</form>
+					</th>
+					<th ng-repeat="icon in tabledata.headerIcons | objectToArray:false track by $index" class="text-center">
+						{{icon }}
+					</th>
+					<th ng-if="tabledata.checkboxColumn && tabledata.checkboxColumn.position === 'last'" class="text-center"> 
+						<span ng-show="!tabledata.checkboxColumn.sortable" style="width:70%">
+							{{tabledata.checkboxColumn.title }}</span>
+						<span class="clickable" ng-show="tabledata.checkboxColumn.sortable" ng-click="changeSort(-1)">
+							<span style="width:70%">{{tabledata.checkboxColumn.title }}</span>
+							<span ng-show="!reverseSort && order==='-1'" class="glyphicon glyphicon-chevron-down"
+										popover="{{'ORDER_DOWN_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left"/>
+							<span ng-show="reverseSort && order==='-1'" class="glyphicon glyphicon-chevron-up"
+										popover="{{'ORDER_UP_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left"/>
+						</span>
+					</th>
+					<th>
+						<div ng-if="tabledata.searchableOutside || (tabledata.emitFilter && tabledata.emitFilter.value)">
+							<span ng-click="searchChangeManual(data._$key)"
+										class="iconHeadTitle glyphicon glyphicon-filter"
+										popover="{{tabledata.emitFilter? (tabledata.emitFilter.label ) : ('SEARCH_TOOLTIP' )}}" 
+										popover-trigger="mouseenter" popover-placement="left"/>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody id="bodyTable">
+				<tr ng-repeat="data in tablefiltered | startFrom:(currentPage - 1) * tabledata.pagination.numElementsPerPage:
+											 (tabledata.pagination.lengthArray? false : true) | 
+											 limitTo: tabledata.pagination.numElementsPerPage"
+						ng-class="{ backgroundWhite: tabledata.rowClickable }">
+
+					<td ng-if="tabledata.checkboxColumn && tabledata.checkboxColumn.position === 'first'" class="text-center"> 
+						<input type="checkbox" ng-model="data.checkbox"
+									 ng-change="checkboxChange(data)" popover="{{tabledata.checkboxColumn.tooltip }}" 
+									 popover-trigger="mouseenter" popover-placement="left">
+					</td>
+					<td ng-repeat="(ind, column) in (tabledata.headerColumns.empty? data.data: tabledata.headerColumns) | 
+												 objectToArray:(tabledata.headerColumns.empty? false: true)
+												 track by ind" ng-assign-variables="key, (column._$key? column._$key: ind), row, 
+																														(column._$key? data.data : (data.data | objectToArray))"
+							ng-class="{clickable: tabledata.rowClickable, 'text-center':tabledata.headerColumns[key].align=='center',
+												'text-left':tabledata.headerColumns[key].align=='left', 
+												'text-right':tabledata.headerColumns[key].align=='right'}"
+							ng-click="tabledata.rowClickable? clickRow(data.data): ''">
+
+						<div ng-switch="tabledata.headerColumns[key].type" >
+							<div ng-switch-when="color" class="row">
+								<div ng-hide="tabledata.headerColumns[key].editable && tabledata.editableInside
+															&& editionMode && rowToEdit === row[tabledata.colIdentifier]">
+									<label ng-style= "{'background-color':data.data[key]}" style=" width: 2.5em;
+																																								height: 2.5em; "> </label>
+								</div>
+								<div ng-if="tabledata.headerColumns[key].editable && tabledata.editableInside
+														&& editionMode && rowToEdit === row[tabledata.colIdentifier]">
+									<div class="col-md-2">
+										<label ng-style= "{'background-color':rowToEditObject[key].value}" style=" width: 2.5em;
+																																															height: 2.5em; "> </label>
+									</div>
+									<div class="col-md-10">
+										<form class="form-inline">
+											<input class="form-control inline" colorpicker="rgb" ng-model="rowToEditObject[key].value" 
+														 type="text" style="width:80%" style="overflow-y: visible;">
+											<span class="glyphicon glyphicon-repeat icon-flipped clickable inline" 
+														ng-click="undoEditData(key)"
+														popover="{{'UNDO_TOOLTIP' }}" popover-trigger="mouseenter" 
+														popover-placement="left">
+											</span>
+										</form>
+									</div>
+								</div>
+								<br> 
+							</div>
+							<div ng-switch-when="thresholds"
+									 ng-scrolling scroll="tabledata.headerColumns[key].scrolling"
+									 height="tabledata.headerColumns[key].maxHeight"
+									 width="tabledata.headerColumns[key].maxWidth">
+								<div ng-repeat="r in data.data[key]">
+									<div class="col-md-2">
+										<label ng-style= "{'background-color':r.color}" style=" width: 2em; height: 2em; " ></label>
+									</div>
+									<div class="col-md-8">
+										{{ 'THRESHOLD_VALUE' }} {{r.value}} 
+									</div>
+									<br/><br/>
+								</div>
+							</div>
+							<div ng-if="!tabledata.checkboxColumn" ng-switch-when="checkbox">
+								<input type="checkbox" ng-model="row[key]"
+											 ng-change="checkboxChange(data, key)" 
+											 popover="{{tabledata.headerColumns[key].tooltip }}" 
+											 popover-trigger="mouseenter" popover-placement="left">
+							</div>
+
+							<div ng-switch-when="boolean">
+								<span class="glyphicon" ng-class="{'glyphicon glyphicon-ok': row[key], 'text-success': row[key],
+																									'glyphicon-remove': !row[key], 'text-danger': !row[key] }"</span>
+							</div>
+
+							<div ng-if="(!tabledata.headerColumns[key].editable) || !tabledata.editableInside" ng-switch-default
+									 ng-scrolling scroll="tabledata.headerColumns[key].scrolling"
+									 height="tabledata.headerColumns[key].maxHeight"
+									 width="tabledata.headerColumns[key].maxWidth">
+								<form class="form-inline">
+									<div class="form-group">
+										{{row[key]}}
+									</div>
+								</form>
+							</div>
+							<div ng-if="tabledata.headerColumns[key].editable && tabledata.editableInside" ng-switch-default
+									 ng-scrolling scroll="tabledata.headerColumns[key].scrolling"
+									 height="tabledata.headerColumns[key].maxHeight"
+									 width="tabledata.headerColumns[key].maxWidth">
+								<form name="columnForm.{{$index}}" class="form-inline">
+
+									<span ng-hide="editionMode && rowToEdit === row[tabledata.colIdentifier]">
+										{{row[key]}}
+									</span>
+
+									<!--
+ng-class="{ 'has-error' : 
+columnForm.{{$index}}.conditionValue.$error.pattern ||
+columnForm.{{$index}}.conditionValue.$error.required }" 
+-->
+
+									<div class="form-group"  
+											 ng-show="editionMode && rowToEdit === row[tabledata.colIdentifier]"
+											 ng-switch="tabledata.headerColumns[key].typeEdition.toLowerCase()">
+
+										<input type="text" class="form-control inline" name="conditionValue"  
+													 ng-switch-default ng-model="rowToEditObject[key].value"
+													 id="conditionValue" style="width:80%"
+													 ng-pattern="{{tabledata.headerColumns[key].validationPattern}}" 
+													 ng-required="{{tabledata.headerColumns[key].notNull}}">
+
+										<select class="form-control inline" ng-model="rowToEditObject[key].value" 
+														ng-switch-when="select" style="width:80%" name="conditionValue">
+											<option ng-repeat="n in tabledata.headerColumns[key].options" 
+															ng-bind-html="to_trusted(n.label)" 
+															value="{{n.value}}">
+											</option>
+										</select>
+
+										<input type="number" class="form-control inline" name="conditionValue"  
+													 ng-switch-when="number" ng-model="rowToEditObject[key].value"
+													 id="conditionValue" style="width:80%"
+													 ng-if="!tabledata.headerColumns[key].validationPattern"
+													 ng-required="{{tabledata.headerColumns[key].notNull}}">
+										<input type="text" class="form-control inline" name="conditionValue"  
+													 ng-switch-when="number" ng-model="rowToEditObject[key].value"
+													 id="conditionValue" style="width:80%"
+													 ng-if="tabledata.headerColumns[key].validationPattern"
+													 ng-pattern="{{tabledata.headerColumns[key].validationPattern}}" 
+													 ng-required="{{tabledata.headerColumns[key].notNull}}">
+
+										<input class="form-control inline" type="file" name="conditionValue"
+													 ng-switch-when="file" ng-model="rowToEditObject[key].value" style="width:80%">
+										<input class="form-control inline" type="password" name="conditionValue"
+													 ng-switch-when="password" ng-model="rowToEditObject[key].value" style="width:80%">
+										<input class="form-control inline" type="email" name="conditionValue"
+													 ng-switch-when="email" ng-model="rowToEditObject[key].value" style="width:80%">
+
+										<span class="glyphicon glyphicon-repeat icon-flipped clickable inline" 
+													ng-click="undoEditData(key)"
+													popover="{{'UNDO_TOOLTIP' }}" popover-trigger="mouseenter" 
+													popover-placement="left">
+										</span>
+										<br/>
+										<!--
+<p ng-show="columnForm.{{$index}}.conditionValue.$error.pattern" class="help-block">
+{{tabledata.headerColumns[key].validationMessage }}
+</p>
+-->
+									</div>
+								</form>
+							</div>
+						</div>
+					</td>
+
+					<td ng-repeat="icon in data.icons" class="text-center" popup>
+						<span ng-if="icon === 'editable' && !tabledata.editableInside && 
+												 tabledata.headerIcons.editable !== undefined" ng-click="edit(data.data)"
+									class="glyphicon glyphicon-pencil clickable" 								
+									popover="{{'EDIT_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<div class="inline clickable" ng-if="icon === 'editable' && tabledata.editableInside && 
+																								 tabledata.headerIcons.editable !== undefined">							
+							<span class="glyphicon glyphicon-pencil" ng-click="startEdition(data.data, $parent.$parent.$index)" 
+										ng-show="!editionMode || !(rowToEdit === data.data[tabledata.colIdentifier])"
+										popover="{{'EDIT_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left"></span>
+							<span class="glyphicon glyphicon-floppy-saved" ng-click="finishEdition(data.data)" 
+										ng-show="editionMode && rowToEdit === data.data[tabledata.colIdentifier]"
+										popover="{{'SAVE_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left" style="width:45%"></span>
+							<span class="glyphicon glyphicon-remove" ng-click="cancelEdition(data.data)" 
+										ng-show="editionMode && rowToEdit === data.data[tabledata.colIdentifier]"
+										popover="{{'CANCEL_TOOLTIP' }}" popover-trigger="mouseenter" 
+										popover-placement="left" style="width:45%"></span>
+						</div>
+						<span ng-if="icon === 'removable' && tabledata.headerIcons.removable !== undefined  && !data.recovery" 
+									ng-click="remove(data.data)" 
+									class="glyphicon glyphicon-trash clickable"
+									popover="{{'REMOVE_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<span ng-if="icon === 'removable' && tabledata.headerIcons.removable !== undefined && data.recovery" 
+									ng-click="remove(data.data)" 
+									class="glyphicon glyphicon-repeat icon-flipped clickable "
+									popover="{{'RECOVERY_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<span ng-if="icon === 'configuration' && tabledata.headerIcons.configuration !== undefined" 
+									class="glyphicon glyphicon-cog clickable" ng-click="setConfiguration(data.data)"
+									popover="{{'SET_CONFIGURATION_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<span ng-if="icon === 'readings' && tabledata.headerIcons.readings !== undefined" 
+									class="glyphicon glyphicon-lock clickable" ng-click="readings(data.data)"
+									popover="{{'READINGS_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<span ng-if="icon === 'writings' && tabledata.headerIcons.writings !== undefined" 
+									class="glyphicon glyphicon-lock clickable" ng-click="writings(data.data)"
+									popover="{{'WRITINGS_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left">
+						</span>
+						<span ng-if="icon === 'detail' && tabledata.headerIcons.detail !== undefined" 
+									class="glyphicon glyphicon-eye-open clickable" ng-click="detailData(data.data)" 
+									popover="{{'DETAIL_TOOLTIP' }}" popover-trigger="mouseenter" 
+									popover-placement="left"> 
+						</span>
+
+						<a ng-if="icon === 'email' && tabledata.headerIcons.email !== undefined && data.mail.data"
+							 class="glyphicon glyphicon-envelope text-success" ng-class="{'text-danger': data.mail.error}"
+							 rel="popover" data-content="{{data.mail.data}}" data-placement="left" 
+							 data-trigger="hover">
+						</a>						
+						<a ng-if="icon === 'telephone' && tabledata.headerIcons.telephone !== undefined && data.telephone.data"
+							 class="glyphicon glyphicon-earphone text-success" ng-class="{'text-danger': data.telephone.error}"
+							 rel="popover" data-content="{{data.telephone.data}}" data-placemen="left" data-trigger="hover">
+						</a>
+					</td>
+
+					<td ng-if="tabledata.checkboxColumn && tabledata.checkboxColumn.position === 'last'" class="text-center"> 
+						<input type="checkbox" ng-model="data.checkbox" ng-change="checkboxChange(data)" popover-trigger="mouseenter"
+									 popover-placement="left" popover="{{tabledata.checkboxColumn.tooltip }}">
+					</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<p ng-if="tablefiltered != undefined && tablefiltered.length === 0 && isUpdatedTable"></p>
+	</div>
+	<div id="pagination" ng-show="tabledata.pagination.numbering">
+		<pagination ng-show="(tabledata.pagination.lengthArray? tabledata.pagination.lengthArray > 
+												 tabledata.pagination.numElementsPerPage : tablefiltered.length >
+												 tabledata.pagination.numElementsPerPage)" 
+								total-items="tabledata.pagination.lengthArray? tabledata.pagination.lengthArray : tablefiltered.length" 
+								ng-model="currentPage" 
+								items-per-page="tabledata.pagination.numElementsPerPage" max-size="tabledata.pagination.maxSize" 
+								class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"
+								first-text="Primero" last-text="Último" previous-text="Anterior" next-text="Siguiente">
+		</pagination>
+	</div>
+	<div id="pager" ng-show="tabledata.pagination.prenext">
+		<pager ng-show="(tabledata.pagination.lengthArray? tabledata.pagination.lengthArray > 
+										tabledata.pagination.numElementsPerPage : tablefiltered.length >
+										tabledata.pagination.numElementsPerPage)" 
+					 total-items="tabledata.pagination.lengthArray? tabledata.pagination.lengthArray : tablefiltered.length" 
+					 ng-model="currentPage" previous-text="{{ 'PRE'  }}" 
+					 next-text="{{ 'NEXT'  }}" items-per-page="tabledata.pagination.numElementsPerPage">
+		</pager>
+	</div>
+</div>

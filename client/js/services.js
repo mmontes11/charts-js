@@ -10,7 +10,7 @@ services.factory('Chart', ['$resource','Config', function ($resource,Config) {
         //Resource URL
         Config.ChartUrl,
         //Default Parameters
-        {},
+        null,
         //Actions
         {
             minRandom: {
@@ -20,7 +20,8 @@ services.factory('Chart', ['$resource','Config', function ($resource,Config) {
                     numYaxis: 2,
                     min: 0,
                     max: 20
-                }
+                },
+                isArray: false
             },
             maxRandom: {
                 method: 'GET',
@@ -29,12 +30,18 @@ services.factory('Chart', ['$resource','Config', function ($resource,Config) {
                     numYaxis: 10,
                     min: 0,
                     max: 100
-                }
+                },
+                isArray: false
             },
-            all: {
+            findAll: {
                 method: 'GET',
                 url: Config.ChartUrl + '/all',
                 isArray: true
+            },
+            findByID: {
+                method: 'GET',
+                url: Config.ChartUrl + '/:id',
+                isArray: false
             }
         }
     );

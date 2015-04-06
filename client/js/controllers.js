@@ -20,14 +20,8 @@ controllers.controller('AccordionInfoCtrl', ['$scope', function ($scope) {
 
 controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($scope, Chart, Random) {
     $scope.chartFormConfig = {
-        chart: {
-            type: 'line'
-        },
         title: {
             text: 'Candy Consumption'
-        },
-        credits: {
-            enabled: false
         },
         xAxis: {
             categories: ['Lollipops', 'Jelly Beans', 'Bubble Gum']
@@ -40,7 +34,7 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($sco
         series: [{
             name: 'Martin',
             data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
-        },
+            },
             {
                 name: 'John',
                 data: [Random.getRandomInt(0, 5), Random.getRandomInt(0, 5), Random.getRandomInt(0, 5)]
@@ -52,12 +46,6 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($sco
     };
 
     $scope.chartRandomConfig = {
-        chart: {
-            type: 'line'
-        },
-        credits: {
-            enabled: false
-        },
         title: {
             text: 'Random Chart'
         },
@@ -78,7 +66,7 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($sco
     //Form Chart Operations
     $scope.addConsumer = function (name, dashStyle, color, data) {
         $scope.chartFormConfig.series.push({name: name, dashStyle: dashStyle, color: color, data: data});
-        $('#chart').highcharts(angular.copy($scope.chartFormConfig));
+        $scope.updateChart($scope.chartFormConfig);
     };
 
     $scope.$on("UPDATE_CHART_FORM", function (event, data) {
@@ -86,7 +74,7 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($sco
     });
 
     $scope.$on("UPDATE_CHART_WS", function (event, jsonChart) {
-        $('#chart').highcharts(angular.copy(jsonChart));
+        $scope.updateChart(jsonChart);
     });
 }]);
 
@@ -127,37 +115,77 @@ controllers.controller('ManualCtrl', ['$scope', function ($scope) {
 }]);
 
 controllers.controller('RandomCtrl', ['$scope', '$location', 'Chart', function ($scope, $location, Chart) {
-    $scope.jsonData = "";
 
     $scope.randomChart = function (chartType) {
         var params = {numXaxis: $scope.numX, numYaxis: $scope.numY, min: $scope.min, max: $scope.max};
 
         var updateChart = function (data) {
-            $scope.jsonData = data;
             $scope.$broadcast("UPDATE_CHART_WS", data);
         };
 
         switch (chartType) {
             case 0:
-                var data = Chart.get(params, function () {
-                    updateChart(data);
-                });
+                Chart.get(params)
+                    .$promise.then(
+                        function(chart){
+                            updateChart(chart);
+                        },
+                        function(error){
+                            $scope.showDialog("Error","Error generating random chart");
+                        }
+                    );
                 break;
             case 1:
-                var data = Chart.minRandom({}, function () {
-                    updateChart(data);
-                });
+                Chart.minRandom()
+                    .$promise.then(
+                        function(chart){
+                            updateChart(chart);
+                        },
+                        function(error){
+                            $scope.showDialog("Error","Error generating random chart");
+                        }
+                    );
                 break;
             case 2:
-                var data = Chart.maxRandom({}, function () {
-                    updateChart(data);
-                });
+                Chart.maxRandom()
+                    .$promise.then(
+                        function(chart){
+                            updateChart(chart);
+                        },
+                        function(error){
+                            $scope.showDialog("Error","Error generating random chart");
+                        }
+                    );
                 break;
         }
     }
 }]);
 
-controllers.controller('ListChartsCtrl', ['$scope', '$location', 'Chart', function ($scope, $location, Chart) {
+controllers.controller('ListChartsCtrl', ['$scope', 'Chart', function ($scope, Chart) {
 
-    Chart.all();
+    Chart.findAll()
+        .$promise.then(
+            function(charts){
+                console.log(charts);
+            },
+            function(error){
+                console.log(error);
+            }
+        );
+}]);
+
+controllers.controller('ChartDetailsCtrl', ['$scope', 'Chart', '$routeParams', 
+    function ($scope, Chart, $routeParams) {
+
+    $scope.chartID = $routeParams.id;
+    
+    Chart.findByID({ id : $scope.chartID })
+        .$promise.then(
+            function(chart){
+                console.log(chart);
+            },
+            function( error ){
+                console.log(error);
+            }
+        );
 }]);

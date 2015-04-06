@@ -18,15 +18,24 @@ app.constant("Config", {
 });
 
 app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/info', {templateUrl: 'partials/info.html', controller: 'AccordionInfoCtrl'});
-    $routeProvider.when('/manual', {templateUrl: 'partials/manual.html', controller: 'ManualCtrl'});
-    $routeProvider.when('/random', {
-        templateUrl: 'partials/random.html',
-        controller: 'RandomCtrl'
-    });
-    $routeProvider.when('/listCharts', {
-        templateUrl: 'partials/listCharts.html',
-        controller: 'ListChartsCtrl'
-    });
-    $routeProvider.otherwise({redirectTo: '/info'});
+    $routeProvider
+        .when('/info', {
+            templateUrl: 'partials/pages/info.html', 
+            controller: 'AccordionInfoCtrl'})
+        .when('/manual', {
+            templateUrl: 'partials/pages/manual.html', 
+            controller: 'ManualCtrl'})
+        .when('/random', {
+            templateUrl: 'partials/pages/random.html',
+            controller: 'RandomCtrl'
+        })
+        .when('/listCharts', {
+            templateUrl: 'partials/pages/listCharts.html',
+            controller: 'ListChartsCtrl'
+        })
+        .when('/chart/:id', {
+            templateUrl: 'partials/pages/chartDetails.html',
+            controller: 'ChartDetailsCtrl'
+        })
+        .otherwise({redirectTo: '/info'});
 }]);
