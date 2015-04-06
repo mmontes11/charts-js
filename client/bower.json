@@ -10,12 +10,15 @@
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "angular-resource": "latest",
+    "angular-i18n" : "latest", 
     "angular-bootstrap": "latest",
     "angular-bootstrap-colorpicker": "latest",
     "highcharts-release": "latest",
     "highcharts-ng": "latest",
     "jquery": "latest",
-    "bootstrap": "latest"
+    "bootstrap": "latest",
+    "underscore" : "~1.7.*",
+    "underscore.string" : "~2.*"
   }
 }
 

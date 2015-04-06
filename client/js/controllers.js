@@ -125,37 +125,19 @@ controllers.controller('RandomCtrl', ['$scope', '$location', 'Chart', function (
 
         switch (chartType) {
             case 0:
-                Chart.get(params)
-                    .$promise.then(
-                        function(chart){
-                            updateChart(chart);
-                        },
-                        function(error){
-                            $scope.showDialog("Error","Error generating random chart");
-                        }
-                    );
+                var chart = Chart.get(params, function(){
+                    updateChart(chart);
+                });
                 break;
             case 1:
-                Chart.minRandom()
-                    .$promise.then(
-                        function(chart){
-                            updateChart(chart);
-                        },
-                        function(error){
-                            $scope.showDialog("Error","Error generating random chart");
-                        }
-                    );
+                var chart = Chart.minRandom(null, function(){
+                    updateChart(chart);
+                });  
                 break;
             case 2:
-                Chart.maxRandom()
-                    .$promise.then(
-                        function(chart){
-                            updateChart(chart);
-                        },
-                        function(error){
-                            $scope.showDialog("Error","Error generating random chart");
-                        }
-                    );
+                var chart = Chart.maxRandom(null, function(){
+                    updateChart(chart);
+                });  
                 break;
         }
     }
