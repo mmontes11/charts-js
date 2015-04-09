@@ -171,3 +171,20 @@ controllers.controller('ChartDetailsCtrl', ['$scope', 'Chart', '$routeParams',
             }
         );
 }]);
+
+controllers.controller('SaveChartCtrl', ["$scope", 'Chart', function(){
+
+    $scope.saveChart = function(){
+        $scope.newChart["description"] = $scope.description;
+        Chart.save(null, new_chart)
+            .$promise.then(
+                function(success){
+                    scope.showDialog("Info","Chart saved correctly");
+                },
+                function(error){
+                    scope.showDialog("Error","Chart couldn't be saved");
+                }
+        );
+    }
+    
+}]);

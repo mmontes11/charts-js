@@ -41,27 +41,18 @@ directives.directive('chart', ['Chart', function (Chart) {
                 scope.updateChart(scope.chartRandomConfig);
             }
          
-            scope.saveChart = function () {
+            scope.clickSaveChart = function () {
                 var data;
                 if (attributes.chartType === "manual") {
                     data = scope.chartFormConfig;
                 } else if (attributes.chartType === "random") {
                     data = scope.chartRandomConfig;
                 }
-                var new_chart = {
-                    type: attributes.chartType,
-                    description: "colourful chart",
+                scope.newChart = {
+                    type: attributes.chartType, 
                     data: data
                 };
-                Chart.save(null, new_chart)
-                    .$promise.then(
-                        function(success){
-                            scope.showDialog("Info","Chart saved correctly");
-                        },
-                        function(error){
-                            scope.showDialog("Error","Chart couldn't be saved");
-                        }
-                    );
+                scope.showSaveChartDialog();
             }
 
             scope.exportChart = function() {
@@ -86,4 +77,17 @@ directives.directive('customdialog',function(){
             }
         }   
     };
+});
+
+directives.directive()('savechartdialog',function(){
+    return {
+        restrict: "E",
+        controller: "SaveChartCtrl",
+        templateUrl: "partials/dialog/savechartdialog.html",
+        link: function(scope, element, attributes){ 
+            scope.showSaveChartDialog = function(){
+                $('#savechartdialog').modal({ keyboard: false }); 
+            }
+        } 
+    }
 });
