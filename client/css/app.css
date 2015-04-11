@@ -42,3 +42,13 @@ body {
 .chart {
     border-radius: 1%;
 }
+
+textarea {
+    resize: vertical;
+    max-height: 500px;
+}
+
+.description {
+    width: auto;
+    height: auto;
+}

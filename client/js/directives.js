@@ -25,22 +25,33 @@ directives.directive('chart', ['Chart', function (Chart) {
         link: function (scope, element, attributes) {
             scope.updateChart = function(jsonChart){
                 jsonChart["chart"] = {
-                    "renderTo": "chart",
-                    "type": "line" 
+                    "renderTo": "chart"
                 };
                 jsonChart["credits"] = {
                     "enabled": false
                 };
+                jsonChart["exporting"] = {
+                    "enabled": false
+                };
                 scope.chart = new Highcharts.Chart(angular.copy(jsonChart));
-            }
+            };
 
-            if (attributes.chartType === "manual") {
+            if (attributes.chartType && attributes.chartType === "manual") {
                 scope.updateChart(scope.chartFormConfig);
             }
-            if (attributes.chartType === "random") {
+            if (attributes.chartType && attributes.chartType === "random") {
                 scope.updateChart(scope.chartRandomConfig);
             }
-         
+            console.log(attributes.chartType);
+            if (attributes.chartType && attributes.chartType === "detail") {
+                scope.hideButtons = true;
+                console.log(scope.hideButtons);
+            }
+
+            scope.isChartDetail = function () {
+                return (attributes.chartType && attributes.chartType === "detail");
+            };
+
             scope.clickSaveChart = function () {
                 var data;
                 if (attributes.chartType === "manual") {
@@ -53,7 +64,7 @@ directives.directive('chart', ['Chart', function (Chart) {
                     data: data
                 };
                 scope.showSaveChartDialog();
-            }
+            };
 
             scope.exportChart = function() {
                 scope.chart.exportChart({
@@ -73,20 +84,25 @@ directives.directive('customdialog',function(){
             scope.showDialog = function(title,body){
                 scope.titleDialog = title;
                 scope.bodyDialog = body;
-                $('#customdialog').modal({ keyboard: false }); 
+                $('#customdialog').modal({
+                    keyboard: false
+                });
             }
         }   
     };
 });
 
-directives.directive()('savechartdialog',function(){
+directives.directive('savechartdialog', function () {
     return {
         restrict: "E",
-        controller: "SaveChartCtrl",
+        controller: "ChartCtrl",
         templateUrl: "partials/dialog/savechartdialog.html",
         link: function(scope, element, attributes){ 
             scope.showSaveChartDialog = function(){
-                $('#savechartdialog').modal({ keyboard: false }); 
+                $('#savechartdialog').modal({ keyboard: false });
+            };
+            scope.closeSaveChartDialog = function () {
+                $('#savechartdialog').modal('hide');
             }
         } 
     }

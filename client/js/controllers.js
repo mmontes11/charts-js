@@ -76,6 +76,21 @@ controllers.controller('ChartCtrl', ['$scope', 'Chart', 'Random', function ($sco
     $scope.$on("UPDATE_CHART_WS", function (event, jsonChart) {
         $scope.updateChart(jsonChart);
     });
+
+    $scope.saveChart = function () {
+        $scope.newChart["description"] = $scope.description;
+        Chart.save(null, $scope.newChart)
+            .$promise.then(
+            function (success) {
+                $scope.closeSaveChartDialog();
+                $scope.showDialog("Info", "Chart saved correctly");
+            },
+            function (error) {
+                $scope.closeSaveChartDialog();
+                $scope.showDialog("Error", "Chart couldn't be saved");
+            }
+        );
+    }
 }]);
 
 
@@ -156,35 +171,18 @@ controllers.controller('ListChartsCtrl', ['$scope', 'Chart', function ($scope, C
         );
 }]);
 
-controllers.controller('ChartDetailsCtrl', ['$scope', 'Chart', '$routeParams', 
-    function ($scope, Chart, $routeParams) {
+controllers.controller('ChartDetailsCtrl', ['$scope', 'Chart', '$routeParams', function ($scope, Chart, $routeParams) {
 
     $scope.chartID = $routeParams.id;
     
     Chart.findByID({ id : $scope.chartID })
         .$promise.then(
             function(chart){
-                console.log(chart);
+                $scope.description = chart.description;
+                $scope.updateChart(chart.data);
             },
             function( error ){
-                console.log(error);
+                $scope.showDialog("Error", "Chart couldn't be retrieved");
             }
         );
-}]);
-
-controllers.controller('SaveChartCtrl', ["$scope", 'Chart', function(){
-
-    $scope.saveChart = function(){
-        $scope.newChart["description"] = $scope.description;
-        Chart.save(null, new_chart)
-            .$promise.then(
-                function(success){
-                    scope.showDialog("Info","Chart saved correctly");
-                },
-                function(error){
-                    scope.showDialog("Error","Chart couldn't be saved");
-                }
-        );
-    }
-    
 }]);
