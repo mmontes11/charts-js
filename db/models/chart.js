@@ -5,7 +5,7 @@ var ChartSchema = new Schema({
     type: {type: String, default: ''},
     description: {type: String, default: ''},
     data: {type: Object},
-    cretionDate: {type: Date, default: Date.now}
+    creationDate: {type: Date, default: Date.now}
 });
 
 var chartModel = mongoose.model('Chart', ChartSchema);

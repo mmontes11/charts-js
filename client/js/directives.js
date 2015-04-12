@@ -42,11 +42,6 @@ directives.directive('chart', ['Chart', function (Chart) {
             if (attributes.chartType && attributes.chartType === "random") {
                 scope.updateChart(scope.chartRandomConfig);
             }
-            console.log(attributes.chartType);
-            if (attributes.chartType && attributes.chartType === "detail") {
-                scope.hideButtons = true;
-                console.log(scope.hideButtons);
-            }
 
             scope.isChartDetail = function () {
                 return (attributes.chartType && attributes.chartType === "detail");
@@ -60,7 +55,7 @@ directives.directive('chart', ['Chart', function (Chart) {
                     data = scope.chartRandomConfig;
                 }
                 scope.newChart = {
-                    type: attributes.chartType, 
+                    type: attributes.chartType,
                     data: data
                 };
                 scope.showSaveChartDialog();
@@ -105,5 +100,44 @@ directives.directive('savechartdialog', function () {
                 $('#savechartdialog').modal('hide');
             }
         } 
+    }
+});
+
+directives.directive("customSort", function() {
+    return {
+        restrict: 'A',
+        transclude: true,
+        scope: {
+            order: '=',
+            sort: '='
+        },
+        template :
+            ' <a ng-click="sort_by(order)" style="color: #555555;">'+
+            '    <span ng-transclude></span>'+
+            '    <i ng-class="selectedCls(order)"></i>'+
+            '</a>',
+        link: function(scope) {
+
+            // change sorting order
+            scope.sort_by = function(newSortingOrder) {
+                var sort = scope.sort;
+
+                if (sort.sortingOrder == newSortingOrder){
+                    sort.reverse = !sort.reverse;
+                }
+
+                sort.sortingOrder = newSortingOrder;
+            };
+
+
+            scope.selectedCls = function(column) {
+                if(column == scope.sort.sortingOrder){
+                    return ('icon-chevron-' + ((scope.sort.reverse) ? 'down' : 'up'));
+                }
+                else{
+                    return'icon-sort'
+                }
+            };
+        }// end link
     }
 });

@@ -90,7 +90,11 @@ exports.generateRandomChart = function(req,res){
 };
 
 exports.getAllCHarts = function (req, res) {
-    db_chart.chartModel.find().sort({creationDate: -1}).exec(function (err, charts) {
+    db_chart.chartModel
+        .find()
+        .sort({creationDate: -1})
+        .select('_id type description creationDate')
+        .exec(function (err, charts) {
         if (err) {
             console.log(err);
             res.send(500);

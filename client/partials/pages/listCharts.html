@@ -1,0 +1,41 @@
+<div id="container">
+    <div class="well">
+        <table class="table table-striped table-condensed table-hover">
+            <thead>
+
+            <tr>
+                <th custom-sort order="'_id'" sort="sort">ID&nbsp;</th>
+                <th custom-sort order="'type'" sort="sort">Type&nbsp;</th>
+                <th  custom-sort order="'creationDate'" sort="sort">Creation Date&nbsp;</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <td colspan="6">
+                <nav>
+                    <ul class="pagination text">
+                        <li ng-class="{disabled: currentPage == 0}">
+                            <a href ng-click="prevPage()">« Prev</a>
+                        </li>
+                        <li ng-repeat="n in range(items.length, currentPage, currentPage + gap) "
+                            ng-class="{active: n == currentPage, disabled: n != currentPage}"
+                            ng-click="setPage()">
+                            <a href ng-bind="n + 1"></a>
+                        </li>
+
+                        <li ng-class="{disabled: (currentPage) == pagedItems.length - 1}">
+                            <a href ng-click="nextPage()">Next »</a>
+                        </li>
+                    </ul>
+                </nav>
+            </td>
+            </tfoot>
+            <tbody>
+            <tr ng-repeat="item in pagedItems[currentPage] | orderBy:sort.sortingOrder:sort.reverse">
+                <td><a href="#/chart/{{item._id}}">{{item._id}}</a></td>
+                <td>{{item.type}}</td>
+                <td>{{item.creationDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

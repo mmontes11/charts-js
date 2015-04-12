@@ -31,7 +31,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         })
         .when('/listCharts', {
             templateUrl: 'partials/pages/listCharts.html',
-            controller: 'ListChartsCtrl'
+            controller: 'ChartTableCtrl'
         })
         .when('/chart/:id', {
             templateUrl: 'partials/pages/chartDetails.html',
