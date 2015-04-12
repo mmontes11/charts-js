@@ -23,7 +23,6 @@ charts-js/config/secret.js
 npm start
 ```
 * The magic happens at [http://localhost:8080](http://localhost:8080)
-* 
 
 ### Demo
 
