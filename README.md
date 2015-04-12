@@ -14,10 +14,6 @@ $ npm install
 ```bash
 charts-js/config/configDB.js
 ```
-* The next step is create your own encription key at:
-```bash
-charts-js/config/secret.js
-```
 * Finally, run your server executing the command below:
 ```bash
 npm start
