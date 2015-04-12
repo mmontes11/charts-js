@@ -8,13 +8,18 @@ var controllers = angular.module('controllers', []);
 controllers.controller('AccordionInfoCtrl', ['$scope', function ($scope) {
     $scope.groups = [
         {
-            title: 'Form',
-            content: 'Draw a chart using data from a Form.'
+            title: 'Manual',
+            content: 'Generate a chart by your own.'
         },
         {
             title: 'Random',
-            content: 'Get random chart data from a WebService and represent it.'
-        }
+            content: 'Generate a colourful random chart.'
+        },
+        {
+            title: 'List of Charts',
+            content: 'List of all charts.'
+        },
+
     ];
 }]);
 
