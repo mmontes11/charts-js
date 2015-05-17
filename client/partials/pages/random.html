@@ -53,22 +53,18 @@
                     <input id='max' name='max' type="number" class="form-control"
                            ng-model="max" min="0" max="100" integer required/>
                 </div>
-                <p>
-                <button class="btn btn-primary" ng-click="randomChart(0)"
-                        ng-disabled="form.$invalid || innerform.$invalid">
-                    Custom Chart <span class="glyphicon glyphicon-stats"></span>
-                </button>
-                </p>
-                <p>
-                <button class="btn btn-success" ng-click="randomChart(1)">
-                    Small Chart <span class="glyphicon glyphicon-stats"></span>
-                </button>
-                </p>
-                <p>
-                <button class="btn btn-danger" ng-click="randomChart(2)">
-                    Large Chart <span class="glyphicon glyphicon-stats"></span>
-                </button>
-                </p>
+                <div class="col-md-offset-4 col-md-4 buttonForm">
+                    <button class="btn btn-primary" ng-click="randomChart(0)"
+                            ng-disabled="form.$invalid || innerform.$invalid">
+                        Custom Chart <span class="glyphicon glyphicon-stats"></span>
+                    </button>
+                    <button class="btn btn-success" ng-click="randomChart(1)">
+                        Small Chart <span class="glyphicon glyphicon-stats"></span>
+                    </button>
+                    <button class="btn btn-danger" ng-click="randomChart(2)">
+                        Large Chart <span class="glyphicon glyphicon-stats"></span>
+                    </button>
+                </div>
             </ng-form>
         </div>
     </div>

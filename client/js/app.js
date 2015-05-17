@@ -14,7 +14,8 @@ var app = angular.module('chartsJS', [
 ]);
 
 app.constant("Config", {
-    "ChartUrl": "http://localhost:8080/chart"
+    "ChartUrl": "http://chartsjs-mmontes.rhcloud.com/chart"
+    //"ChartUrl": "http://localhost:8080/chart"
 });
 
 app.config(['$routeProvider', function ($routeProvider) {

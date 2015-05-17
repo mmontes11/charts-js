@@ -1,8 +1,12 @@
+// OpenShift ===================================================================
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
 // set up ======================================================================
 var express = require('express');
 var app = express(); 								// create our app w/ express
+var server = require('http').createServer(app);
 var mongoose = require('mongoose'); 					// mongoose for mongodb
-var port = process.env.PORT || 8080; 				// set the port
 var database = require('./config/configDB'); 			// load the database config
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -23,5 +27,6 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 require('./server/routes.js')(app);
 
 // listen (start app with node server.js) ======================================
-app.listen(port);
-console.log("App listening on port " + port);
+server.listen(server_port, server_ip_address, function () {
+  console.log( "Listening on " + server_ip_address + ", server_port " + server_port );
+});

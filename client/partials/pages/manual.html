@@ -50,10 +50,12 @@
                     </span>
                     <input colorpicker id='pointcolor' type="text" class="form-control" ng-model="pointcolor"/>
                 </div>
-                <button class="btn btn-primary" ng-click="addConsumerForm()"
-                        ng-disabled="form.$invalid || innerform.$invalid">
-                    Add consumer <span class="glyphicon glyphicon-plus"></span>
-                </button>
+                <div class="col-md-offset-4 col-md-4 buttonForm">
+                    <button class="btn btn-primary" ng-click="addConsumerForm()"
+                            ng-disabled="form.$invalid || innerform.$invalid">
+                        Add consumer <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
             </ng-form>
         </div>
     </div>
