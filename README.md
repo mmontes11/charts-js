@@ -19,7 +19,3 @@ charts-js/config/configDB.js
 npm start
 ```
 * The magic happens at [http://localhost:8080](http://localhost:8080)
-
-### Demo
-
-[Online Demo Charts-JS](http://chartsjs-mmontes.rhcloud.com/#/info)
